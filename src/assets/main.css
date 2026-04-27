@@ -3,3 +3,27 @@
 .error {
   color: var(--error);
 }
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  padding: 6px;
+  font-size: 16px;
+  border-radius: var(--radius);
+  margin-top: 20px;
+  border: 2px solid var(--black-soft);
+  font-weight: 600;
+  background-color: var(--white);
+  width: 100px;
+  transition: 0.1s;
+}
+button:hover {
+  background-color: var(--secondary);
+  color: var(--white);
+  cursor: pointer;
+  transition: 0.1s;
+}
