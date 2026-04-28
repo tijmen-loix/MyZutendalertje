@@ -10,7 +10,7 @@ async function handleSubmit() {
 <template>
   <section>
     <img src="@/img/logo-wit.png" alt="Logo 't Zutendalertje" class="logo" />
-    <input v-model="code" type="text" placeholder="code" required />
+    <input v-model="code" type="password" placeholder="code" required />
     <button type="submit" @click="handleSubmit">inloggen</button>
     <p class="error">{{ Auth.error }}</p>
   </section>

@@ -1,38 +1,42 @@
 <script setup>
-import { workedHours, formatHour, totalHours, } from "@/utils/functions.js"
+import { workedHours, formatHour, totalHours, formatDate, formatTime } from "@/utils/functions.js"
+import { storeToRefs } from "pinia"
+import { useAuthStore } from "@/stores/auth.js"
+import { computed } from "vue"
+import MonthChanger from "@/components/MonthChanger.vue"
 
-const shifts = [
-  { datum: "01/05", start: "13:00", end: "20:00" },
-  { datum: "03/05", start: "10:30", end: "18:00" },
-  { datum: "10/05", start: "10:00", end: "18:00" },
-  { datum: "24/05", start: "10:00", end: "18:00" },
-  { datum: "31/05", start: "10:30", end: "18:00" },
-]
+const today = new Date().toISOString().slice(0, 10)
 
-const totalHoursCalculated = totalHours(shifts)
+const Auth = useAuthStore();
+const {userShifts, user} = storeToRefs(Auth)
 
-const monthSalary = (totalHours) => {
-  const hourlyRate = 14.88
-  return (totalHours * hourlyRate).toFixed(2)
-}
+const totalHoursCalculated = computed(()=>totalHours(userShifts.value));
+
+const monthSalary = computed(() => {
+  const hourlyRate = user.value?.uurloon ?? 0
+  return "€ "+(totalHoursCalculated.value * hourlyRate).toFixed(2)
+})
+
 </script>
 
 <template>
-  <table>
-    <thead>
+  <div v-if="userShifts">
+  <MonthChanger/>
+    <table>
+      <thead>
       <tr>
         <th>Datum</th>
         <th>Startuur</th>
         <th>Einduur</th>
         <th>Uren gewerkt</th>
       </tr>
-    </thead>
-    <tbody>
-      <tr v-for="shift in shifts" :key="shift.datum">
-        <td>{{ shift.datum }}</td>
-        <td>{{ shift.start }}</td>
-        <td>{{ shift.end }}</td>
-        <td>{{ workedHours(formatHour(shift.start), formatHour(shift.end)) }}</td>
+      </thead>
+      <tbody>
+      <tr v-for="shift in userShifts" :key="shift.code" :class="{ future: shift.datum > today }">
+        <td>{{ formatDate(shift.datum) }}</td>
+        <td>{{ formatTime(shift.startUur) }}</td>
+        <td>{{ formatTime(shift.eindUur) }}</td>
+        <td>{{ workedHours(formatHour(shift.startUur), formatHour(shift.eindUur)) }}</td>
       </tr>
       <tr>
         <td></td>
@@ -40,18 +44,22 @@ const monthSalary = (totalHours) => {
         <td></td>
         <td></td>
       </tr>
-    </tbody>
-    <tfoot>
+      </tbody>
+      <tfoot>
       <tr>
         <td colspan="3">Totaal</td>
         <td><strong>{{ totalHoursCalculated }}</strong></td>
       </tr>
       <tr>
         <td colspan="3">Verwacht maandloon</td>
-        <td><strong>{{ monthSalary(totalHoursCalculated) }}</strong></td>
+        <td><strong>{{ monthSalary }}</strong></td>
       </tr>
-    </tfoot>
-  </table>
+      </tfoot>
+    </table>
+  </div>
+  <div v-else class="full">
+    <h2>Loading...</h2>
+  </div>
 </template>
 <style>
 table {
@@ -70,5 +78,9 @@ th {
 
 td:nth-child(4) {
   width: 300px;
+}
+.future td {
+  color: var(--error);
+  font-weight: bold;
 }
 </style>
