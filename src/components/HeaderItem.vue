@@ -7,16 +7,13 @@ const Auth = useAuthStore()
 <template>
   <header>
     <section class="header-left">
-      <img src="@/img/logo-wit.png" alt="logo" class="logo"/>
-      <h1>Welkom, {{Auth.user.voornaam +" " + Auth.user.naam}}</h1>
+      <img src="@/img/logo-wit.png" alt="logo" class="logo" />
+      <h1>Welkom, {{ Auth.user.voornaam + " " + Auth.user.naam }}</h1>
       <SalaryChanger />
     </section>
     <section class="header-right">
-
-      <UserChanger v-if="Auth.admin"/>
-      <button @click="Auth.logout">
-        Uitloggen
-      </button>
+      <UserChanger v-if="Auth.admin" />
+      <button @click="Auth.logout">Uitloggen</button>
     </section>
   </header>
 </template>
@@ -42,7 +39,7 @@ header {
 .logo {
   height: 120px;
 }
-h1{
+h1 {
   margin: 10px 0 20px 40px;
   font-weight: 600;
 }

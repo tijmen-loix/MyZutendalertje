@@ -11,8 +11,9 @@ export const useAuthStore = defineStore("auth", () => {
   const userShifts = ref([])
   const allShifts = ref([])
   const loading = ref(false)
-  const users = ref([]);
+  const users = ref([])
   const month = ref(new Date().getMonth() + 1)
+  const year = ref(new Date().getFullYear())
   const updatingUurloon = ref(false)
 
   async function initialize() {
@@ -52,10 +53,9 @@ export const useAuthStore = defineStore("auth", () => {
 
   function setError(err) {
     error.value = err
-    setTimeout(()=>{
+    setTimeout(() => {
       error.value = null
-      },1500
-    )
+    }, 1500)
   }
 
   function logout() {
@@ -67,7 +67,7 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   async function login(code) {
-    if (!code){
+    if (!code) {
       setError("Vul een code in.")
       return
     }
@@ -96,14 +96,18 @@ export const useAuthStore = defineStore("auth", () => {
 
   function switchMonth(newMonth) {
     month.value = Number(newMonth)
-    userShifts.value = allShifts.value.filter(shift => {
+    userShifts.value = allShifts.value.filter((shift) => {
       const maand = parseInt(shift.datum.slice(5, 7))
       return maand === month.value
+    }).sort((a, b) => {
+      const dateA = new Date(`${a.datum}T${a.startUur}`)
+      const dateB = new Date(`${b.datum}T${b.startUur}`)
+      return dateA - dateB
     })
   }
 
   async function updateUurloon(uurloon) {
-    if (updatingUurloon.value)return
+    if (updatingUurloon.value) return
     updatingUurloon.value = true
     try {
       await apiService.updateUurloon(user.value.code, uurloon)
@@ -118,10 +122,45 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
+  async function addShift(code, datum, startUur, eindUur) {
+    loading.value = true
+    if (!datum || !startUur || !eindUur) {
+      setError("Vul alle velden in.")
+      console.log(eindUur, startUur, datum)
+      loading.value = false
+      return
+    }
+    try {
+      await apiService.addShift(code, datum, startUur, eindUur)
+      setError("Shift succesvol toegevoegd.")
+      await getShifts(user.value.code)
+    } catch (error) {
+      setError("Fout bij het toevoegen van de shift. Probeer opnieuw.")
+    } finally {
+      loading.value = false
+    }
+  }
 
   const isLoggedIn = computed(() => !!user.value)
 
-  initialize();
+  initialize()
 
-  return { login, error, logout, user, userShifts, users, switchUser, isLoggedIn, loading, month, switchMonth, admin, updateUurloon, updatingUurloon }
+  return {
+    login,
+    error,
+    logout,
+    user,
+    userShifts,
+    users,
+    switchUser,
+    isLoggedIn,
+    loading,
+    month,
+    year,
+    switchMonth,
+    admin,
+    updateUurloon,
+    updatingUurloon,
+    addShift,
+  }
 })

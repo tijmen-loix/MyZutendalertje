@@ -1,32 +1,42 @@
 async function login(code) {
-  const res = await fetch('http://localhost:3000/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code })
+  const res = await fetch("http://localhost:3000/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code }),
   })
-  if (!res.ok) throw new Error('Ongeldige code')
+  if (!res.ok) throw new Error("Ongeldige code")
   return res.json()
 }
 
 async function getShifts(code) {
   const res = await fetch(`http://localhost:3000/shifts/${code}`)
-  if (!res.ok) throw new Error('Shifts ophalen mislukt')
+  if (!res.ok) throw new Error("Shifts ophalen mislukt")
   return res.json()
 }
 
 async function getUsers() {
-  const res = await fetch('http://localhost:3000/users')
-  if (!res.ok) throw new Error('Users ophalen mislukt')
+  const res = await fetch("http://localhost:3000/users")
+  if (!res.ok) throw new Error("Users ophalen mislukt")
   return res.json()
 }
 
 async function updateUurloon(code, uurloon) {
   const res = await fetch(`http://localhost:3000/users/${code}/uurloon`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ uurloon })
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ uurloon }),
   })
-  if (!res.ok) throw new Error('Uurloon aanpassen mislukt')
+  if (!res.ok) throw new Error("Uurloon aanpassen mislukt")
+  return res.json()
+}
+
+async function addShift(code, datum, startUur, eindUur) {
+  const res = await fetch(`http://localhost:3000/shifts/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, datum, startUur, eindUur }),
+  })
+  if (!res.ok) throw new Error("Shift toevoegen mislukt")
   return res.json()
 }
 
@@ -34,5 +44,6 @@ export default {
   login,
   getShifts,
   getUsers,
-  updateUurloon
+  updateUurloon,
+  addShift,
 }

@@ -3,7 +3,11 @@ import { useAuthStore } from "@/stores/auth.js"
 const Auth = useAuthStore()
 </script>
 <template>
-  <select name="monthChanger" @change="Auth.switchMonth(Number($event.target.value))" :value="Auth.month">
+  <select
+    name="monthChanger"
+    @change="Auth.switchMonth(Number($event.target.value))"
+    :value="Auth.month"
+  >
     <option value="1">Januari</option>
     <option value="2">Februari</option>
     <option value="3">Maart</option>

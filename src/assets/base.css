@@ -1,11 +1,11 @@
-/* color palette from <https://github.com/vuejs/theme> */
+
 :root {
   --white: #ffffff;
   --white-soft: #f8f8f8;
 
   --black: #181818;
   --black-soft: #222222;
-  --black-mute: #282828;
+  --black-mute: #484848;
 
   --secondary: #ffa600;
 

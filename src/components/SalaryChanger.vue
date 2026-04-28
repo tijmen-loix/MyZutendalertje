@@ -1,5 +1,5 @@
 <script setup>
-import {formatSalary} from "@/utils/functions.js"
+import { formatSalary } from "@/utils/functions.js"
 import { useAuthStore } from "@/stores/auth.js"
 import { ref } from "vue"
 const Auth = useAuthStore()
@@ -16,21 +16,21 @@ function saveUurloon() {
   Auth.updateUurloon(Number(uurloon.value))
   toggleVisible()
 }
-
 </script>
 <template>
-  <section class="uurloon" >
-    <h2>Uurloon:</h2>
-    <input type="number" v-model="uurloon" @change="toggleVisible"/>
+  <section class="uurloon">
+    <h2>Uurloon: €</h2>
+    <input type="number" v-model="uurloon" @change="toggleVisible" />
     <button v-if="visible" @click="saveUurloon" :disabled="Auth.updatingUurloon">-></button>
-    <p>{{Auth.error}}</p>
+    <p>{{ Auth.error }}</p>
   </section>
 </template>
 <style scoped>
-.uurloon{
+.uurloon {
   display: flex;
   align-items: flex-start;
   margin: 20px 40px 0 40px;
+  font-style: italic;
 }
 input {
   background: transparent;
@@ -41,6 +41,7 @@ input {
   outline: none;
   font-size: 22px;
   font-weight: bold;
+  font-style: italic;
 }
 input:focus {
   border-bottom: 2px solid var(--secondary);
@@ -56,8 +57,7 @@ button {
 h2 {
   margin-top: -4px;
 }
-p{
+p {
   color: var(--secondary);
 }
-
 </style>

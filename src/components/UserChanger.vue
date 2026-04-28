@@ -2,13 +2,17 @@
 import { useAuthStore } from "@/stores/auth.js"
 
 const Auth = useAuthStore()
-
-
 </script>
 <template>
   <section>
-    <select name="userChanger" @change="Auth.switchUser($event.target.value)" :value="Auth.user.code">
-      <option v-for="user in Auth.users" :key="user.code" :value="user.code">{{user.voornaam}}</option>
+    <select
+      name="userChanger"
+      @change="Auth.switchUser($event.target.value)"
+      :value="Auth.user.code"
+    >
+      <option v-for="user in Auth.users" :key="user.code" :value="user.code">
+        {{ user.voornaam }}
+      </option>
     </select>
   </section>
 </template>

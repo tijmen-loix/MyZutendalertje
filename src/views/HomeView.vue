@@ -3,8 +3,7 @@ import HeaderItem from "@/components/HeaderItem.vue"
 import PlanningItem from "@/components/PlanningItem.vue"
 
 import { useAuthStore } from "@/stores/auth.js"
-const Auth = useAuthStore();
-
+const Auth = useAuthStore()
 </script>
 <template>
   <div v-if="Auth.loading" class="full">
@@ -12,10 +11,10 @@ const Auth = useAuthStore();
   </div>
 
   <div v-else-if="Auth.isLoggedIn">
-    <HeaderItem/>
+    <HeaderItem />
     <main>
       <section class="planning">
-        <PlanningItem/>
+        <PlanningItem />
       </section>
     </main>
   </div>
