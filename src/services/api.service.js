@@ -46,6 +46,16 @@ async function getAllShifts() {
   return res.json()
 }
 
+async function deleteShift(id, code) {
+  const res = await fetch(`http://localhost:3000/delete`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, code }),
+  })
+  if (!res.ok) throw new Error("Shift verwijderen mislukt")
+  return res.json()
+}
+
 export default {
   login,
   getShifts,
@@ -53,4 +63,5 @@ export default {
   updateUurloon,
   addShift,
   getAllShifts,
+  deleteShift,
 }

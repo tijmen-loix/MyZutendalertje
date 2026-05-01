@@ -192,6 +192,20 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
+  async function deleteShift(id, code) {
+    loading.value = true
+    try {
+      await apiService.deleteShift(id, code)
+      setError("Shift succesvol verwijderd.", "success")
+      await getShifts(user.value.code)
+      await getAllShifts()
+    } catch (error) {
+      setError("Fout bij het verwijderen van de shift. Probeer opnieuw.", "error")
+    } finally {
+      loading.value = false
+    }
+  }
+
   const isLoggedIn = computed(() => !!user.value)
 
   initialize()
@@ -216,6 +230,7 @@ export const useAuthStore = defineStore("auth", () => {
     allShiftsAdmin,
     switchMonthAdmin,
     monthAdmin,
-    addShiftAdmin
+    addShiftAdmin,
+    deleteShift,
   }
 })

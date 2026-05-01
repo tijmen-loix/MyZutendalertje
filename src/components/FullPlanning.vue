@@ -60,7 +60,6 @@ th:nth-child(4) {
 }
 
 p{
-  color: var(--error);
   font-weight: 500;
   margin-top: 10px;
   display: none;

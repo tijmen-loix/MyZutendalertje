@@ -6,6 +6,7 @@ import { computed } from "vue"
 import MonthChanger from "@/components/MonthChanger.vue"
 import AddShift from "@/components/AddShift.vue"
 import UserChanger from "@/components/UserChanger.vue"
+import deleteShift from "@/components/deleteShift.vue"
 
 const today = new Date().toISOString().slice(0, 10)
 
@@ -40,7 +41,9 @@ const monthSalary = computed(() => {
           <td>{{ formatDate(shift.datum) }}</td>
           <td>{{ formatTime(shift.startUur) }}</td>
           <td>{{ formatTime(shift.eindUur) }}</td>
-          <td>{{ workedHours(formatHour(shift.startUur), formatHour(shift.eindUur)).toFixed(2) }}</td>
+          <td>{{ workedHours(formatHour(shift.startUur), formatHour(shift.eindUur)).toFixed(2) }}
+          <deleteShift :shift-user-code="shift.code" :shift-id="shift.id"/>
+          </td>
         </tr>
       <AddShift/>
       </tbody>
@@ -94,7 +97,6 @@ th:nth-child(4) {
 }
 
 p{
-  color: var(--error);
   font-weight: 500;
   margin-top: 10px;
   display: none;
