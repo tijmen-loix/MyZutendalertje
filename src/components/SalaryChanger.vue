@@ -22,14 +22,14 @@ function saveUurloon() {
     <h2>Uurloon: €</h2>
     <input type="number" v-model="uurloon" @change="toggleVisible" />
     <button v-if="visible" @click="saveUurloon" :disabled="Auth.updatingUurloon">-></button>
-    <p>{{ Auth.error }}</p>
+    <p v-if="Auth.error" :class="Auth.error.type">{{Auth.error.message}}</p>
   </section>
 </template>
 <style scoped>
 .uurloon {
   display: flex;
   align-items: flex-start;
-  margin: 20px 40px 0 40px;
+  margin: 0 40px 0 40px;
   font-style: italic;
 }
 input {
@@ -39,8 +39,8 @@ input {
   margin: 3px 4px 0 8px;
   width: 80px;
   outline: none;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 500;
   font-style: italic;
 }
 input:focus {
@@ -52,12 +52,39 @@ button {
   background-color: var(--secondary);
   color: var(--white);
   width: 35px;
+  border-radius: 16px;
 }
 
 h2 {
   margin-top: -4px;
+  font-weight: 500;
+  font-size: 22px;
 }
 p {
-  color: var(--secondary);
+  display: block;
+}
+
+@media screen and (max-width: 1130px) {
+  .uurloon {
+    margin: 5px 0 20px 10px;
+  }
+  h2 {
+    font-size: 14px;
+  }
+  input {
+    margin: 0 4px 0 8px;
+    font-size: 14px;
+    width: 60px;
+  }
+  button {
+    margin: 0 20px -20px 0;
+    width: 30px;
+    font-size: 14px;
+    padding: 2px;
+    border-radius: 16px;
+  }
+  p {
+    display: none;
+  }
 }
 </style>

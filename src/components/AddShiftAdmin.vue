@@ -7,6 +7,7 @@ const Auth = useAuthStore()
 const datum = ref(`${Auth.year}-${String(Auth.month).padStart(2, '0')}-`)
 const startUur = ref("")
 const eindUur = ref("")
+const voornaam = ref("")
 
 watch(() => Auth.month, (newMonth) => {
   datum.value = `${Auth.year}-${String(newMonth).padStart(2, '0')}-`
@@ -14,12 +15,13 @@ watch(() => Auth.month, (newMonth) => {
 
 </script>
 <template>
-  <tr v-if="Auth.admin">
+  <tr>
+    <td><input type="text" v-model="voornaam" /></td>
     <td><input type="text" v-model="datum" /></td>
     <td><input type="text" v-model="startUur" placeholder="10:00"/></td>
     <td><input type="text" v-model="eindUur" placeholder="18:00"/></td>
     <td>
-      <button @click="Auth.addShift(Auth.user.code, datum, startUur, eindUur)">
+      <button @click="Auth.addShiftAdmin(voornaam, datum, startUur, eindUur)">
         Toevoegen
       </button>
     </td>
@@ -36,13 +38,12 @@ td:nth-child(4) {
 }
 input {
   margin:0;
-  height: 30px;
+  height: 100%;
   width: 100%;
   outline: none;
   background-color: var(--black-mute);
-  border:none;
   color: var(--white-soft);
-  padding: 0 6px;
+  padding: 0 4px;
   font-size: 14px;
 }
 button{
@@ -77,9 +78,6 @@ button{
 
   input {
     font-size: 10px;
-    height: 100%;
-    width: 100%;
-    padding: 0 2px;
   }
   button{
     font-size: 12px;

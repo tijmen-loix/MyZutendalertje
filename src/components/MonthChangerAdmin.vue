@@ -5,8 +5,8 @@ const Auth = useAuthStore()
 <template>
   <select
     name="monthChanger"
-    @change="Auth.switchMonth(Number($event.target.value))"
-    :value="Auth.month"
+    @change="Auth.switchMonthAdmin(Number($event.target.value))"
+    :value="Auth.monthAdmin"
   >
     <option value="1">Januari</option>
     <option value="2">Februari</option>

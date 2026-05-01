@@ -5,6 +5,7 @@ import { useAuthStore } from "@/stores/auth.js"
 import { computed } from "vue"
 import MonthChanger from "@/components/MonthChanger.vue"
 import AddShift from "@/components/AddShift.vue"
+import UserChanger from "@/components/UserChanger.vue"
 
 const today = new Date().toISOString().slice(0, 10)
 
@@ -21,7 +22,10 @@ const monthSalary = computed(() => {
 
 <template>
   <div v-if="userShifts">
-    <MonthChanger />
+    <section class="changers">
+      <MonthChanger />
+      <UserChanger v-if="Auth.admin" />
+    </section>
     <table>
       <thead>
         <tr>
@@ -32,7 +36,7 @@ const monthSalary = computed(() => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="shift in userShifts" :key="shift.code" :class="{ future: shift.datum > today }">
+        <tr v-for="shift in userShifts" :key="shift.id" :class="{ future: shift.datum > today }">
           <td>{{ formatDate(shift.datum) }}</td>
           <td>{{ formatTime(shift.startUur) }}</td>
           <td>{{ formatTime(shift.eindUur) }}</td>
@@ -55,12 +59,17 @@ const monthSalary = computed(() => {
         </tr>
       </tfoot>
     </table>
+    <p v-if="Auth.error" :class="Auth.error.type">{{Auth.error.message}}</p>
   </div>
   <div v-else class="full">
     <h2>Loading...</h2>
   </div>
 </template>
-<style>
+<style scoped>
+.changers{
+  display: flex;
+}
+
 table {
   border-collapse: collapse;
 }
@@ -75,11 +84,46 @@ th {
   text-align: left;
 }
 
-td:nth-child(4) {
+td:nth-child(4),
+th:nth-child(4) {
   width: 300px;
 }
 .future td {
   color: var(--error);
   font-weight: bold;
+}
+
+p{
+  color: var(--error);
+  font-weight: 500;
+  margin-top: 10px;
+  display: none;
+}
+
+@media screen and (max-width: 1130px) {
+  table{
+    width: 100%;
+    margin-bottom: -10px;
+  }
+  td,
+  th {
+    width: 20%;
+    padding: 1px 3px;
+    height: 26px;
+  }
+  td:nth-child(4) {
+    width: 25%;
+  }
+  td{
+    font-size: 12px;
+  }
+  th{
+    font-size: 14px;
+  }
+p{
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
+  }
 }
 </style>

@@ -40,10 +40,17 @@ async function addShift(code, datum, startUur, eindUur) {
   return res.json()
 }
 
+async function getAllShifts() {
+  const res = await fetch (`http://localhost:3000/shifts`)
+  if (!res.ok) throw new Error("Shifts ophalen mislukt")
+  return res.json()
+}
+
 export default {
   login,
   getShifts,
   getUsers,
   updateUurloon,
   addShift,
+  getAllShifts,
 }

@@ -4,6 +4,10 @@
   color: var(--error);
   margin-top: 10px;
 }
+.success{
+  color: var(--success);
+  margin-top: 10px;
+}
 
 * {
   box-sizing: border-box;
@@ -33,4 +37,11 @@ button:hover {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+@media screen and (max-width: 1130px) {
+  button {
+    width: 80px;
+    font-size: 14px;
+  }
 }

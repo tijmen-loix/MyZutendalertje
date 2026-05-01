@@ -7,9 +7,10 @@
   --black-soft: #222222;
   --black-mute: #484848;
 
-  --secondary: #ffa600;
+  --secondary: #ffc412;
 
   --error: #ff4d4f;
+  --success: #ffc412;
 
   --radius: 0;
 }

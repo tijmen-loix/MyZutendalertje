@@ -10,9 +10,12 @@ export const useAuthStore = defineStore("auth", () => {
   const admin = ref(false)
   const userShifts = ref([])
   const allShifts = ref([])
+  const allShiftsAdmin = ref([])
+  const allShiftsAdminOriginal = ref([])
   const loading = ref(false)
   const users = ref([])
   const month = ref(new Date().getMonth() + 1)
+  const monthAdmin = ref(new Date().getMonth() + 1)
   const year = ref(new Date().getFullYear())
   const updatingUurloon = ref(false)
 
@@ -25,9 +28,11 @@ export const useAuthStore = defineStore("auth", () => {
       user.value = JSON.parse(storedUser)
       if (user.value.rol === "werkgever") {
         admin.value = true
+        await getAllShifts()
       }
       await getShifts(user.value.code)
       loading.value = false
+      router.push("/home")
     } else {
       user.value = null
       loading.value = false
@@ -47,19 +52,19 @@ export const useAuthStore = defineStore("auth", () => {
       allShifts.value = await apiService.getShifts(code)
       switchMonth(month.value)
     } catch (error) {
-      setError("Fout bij het ophalen van shifts. Probeer opnieuw.")
+      setError("Fout bij het ophalen van shifts. Probeer opnieuw.", "error")
     }
   }
 
-  function setError(err) {
-    error.value = err
+  function setError(err, type = "error") {
+    error.value = { message: err, type: type }
     setTimeout(() => {
       error.value = null
-    }, 1500)
+    }, 2000)
   }
 
   function logout() {
-    setError(null)
+    setError(null, "error")
     user.value = null
     admin.value = false
     localStorage.removeItem("user")
@@ -68,7 +73,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   async function login(code) {
     if (!code) {
-      setError("Vul een code in.")
+      setError("Vul een code in.", "error")
       return
     }
     loading.value = true
@@ -79,6 +84,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
     if (user.value.rol === "werkgever") {
       admin.value = true
+      await getAllShifts()
     }
     await getShifts(code)
     localStorage.setItem("user", JSON.stringify(user.value))
@@ -106,17 +112,29 @@ export const useAuthStore = defineStore("auth", () => {
     })
   }
 
+  function switchMonthAdmin(newMonth) {
+    monthAdmin.value = Number(newMonth)
+    allShiftsAdmin.value = allShiftsAdminOriginal.value.filter((shift) => {
+      const maand = parseInt(shift.datum.slice(5, 7))
+      return maand === monthAdmin.value
+    }).sort((a, b) => {
+      const dateA = new Date(`${a.datum}T${a.startUur}`)
+      const dateB = new Date(`${b.datum}T${b.startUur}`)
+      return dateA - dateB
+    })
+  }
+
   async function updateUurloon(uurloon) {
     if (updatingUurloon.value) return
     updatingUurloon.value = true
     try {
       await apiService.updateUurloon(user.value.code, uurloon)
       user.value.uurloon = uurloon
-      setError("Uurloon succesvol aangepast.")
+      setError("Uurloon succesvol aangepast.", "success")
       localStorage.setItem("user", JSON.stringify(user.value))
       getShifts(user.value.code)
     } catch (error) {
-      setError("Fout bij het aanpassen van het uurloon. Probeer opnieuw.")
+      setError("Fout bij het aanpassen van het uurloon. Probeer opnieuw.", "error")
     } finally {
       updatingUurloon.value = false
     }
@@ -125,19 +143,52 @@ export const useAuthStore = defineStore("auth", () => {
   async function addShift(code, datum, startUur, eindUur) {
     loading.value = true
     if (!datum || !startUur || !eindUur) {
-      setError("Vul alle velden in.")
-      console.log(eindUur, startUur, datum)
+      setError("Vul alle velden in.", "error")
       loading.value = false
       return
     }
     try {
       await apiService.addShift(code, datum, startUur, eindUur)
-      setError("Shift succesvol toegevoegd.")
+      setError("Shift succesvol toegevoegd.", "success")
       await getShifts(user.value.code)
+      await getAllShifts()
     } catch (error) {
-      setError("Fout bij het toevoegen van de shift. Probeer opnieuw.")
+      setError("Fout bij het toevoegen van de shift. Probeer opnieuw.", "error")
     } finally {
       loading.value = false
+    }
+  }
+
+  async function addShiftAdmin(voornaam, datum, startUur, eindUur) {
+    loading.value = true
+    if (!voornaam || !datum || !startUur || !eindUur) {
+      setError("Vul alle velden in.", "error")
+      loading.value = false
+      return
+    }
+    const user = users.value.find(u => u.voornaam === voornaam)
+    if (!user) {
+      setError("Gebruiker niet gevonden.", "error")
+      loading.value = false
+      return
+    }
+    try {
+      await apiService.addShift(user.code, datum, startUur, eindUur)
+      setError("Shift succesvol toegevoegd.", "success")
+      await getAllShifts()
+    } catch (error) {
+      setError("Fout bij het toevoegen van de shift. Probeer opnieuw.", "error")
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function getAllShifts() {
+    try {
+      allShiftsAdminOriginal.value = await apiService.getAllShifts()
+      switchMonthAdmin(monthAdmin.value)
+    } catch (error) {
+      setError("Fout bij het ophalen van alle shifts. Probeer opnieuw.", "error")
     }
   }
 
@@ -162,5 +213,9 @@ export const useAuthStore = defineStore("auth", () => {
     updateUurloon,
     updatingUurloon,
     addShift,
+    allShiftsAdmin,
+    switchMonthAdmin,
+    monthAdmin,
+    addShiftAdmin
   }
 })

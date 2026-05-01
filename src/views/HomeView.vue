@@ -3,6 +3,7 @@ import HeaderItem from "@/components/HeaderItem.vue"
 import PlanningItem from "@/components/PlanningItem.vue"
 
 import { useAuthStore } from "@/stores/auth.js"
+import FullPlanning from "@/components/FullPlanning.vue"
 const Auth = useAuthStore()
 </script>
 <template>
@@ -15,6 +16,7 @@ const Auth = useAuthStore()
     <main>
       <section class="planning">
         <PlanningItem />
+        <FullPlanning v-if="Auth.admin" />
       </section>
     </main>
   </div>
@@ -25,7 +27,18 @@ const Auth = useAuthStore()
 </template>
 <style scoped>
 .planning {
-  margin-left: 220px;
-  margin-top: -20px;
+  display: flex;
+  justify-content: center;
+  margin: -10px 40px 20px 40px;
+  padding-bottom: 40px;
+  gap:40px
+}
+@media screen and (max-width: 1130px) {
+  .planning {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 10px 20px 10px;
+  }
 }
 </style>

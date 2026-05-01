@@ -9,10 +9,10 @@ async function handleSubmit() {
 </script>
 <template>
   <section>
-    <img src="@/img/logo-wit.png" alt="Logo 't Zutendalertje" class="logo" />
+    <img src="@/img/logo-witGroot.png" alt="Logo 't Zutendalertje" class="logo" />
     <input v-model="code" type="password" placeholder="code" required />
     <button type="submit" @click="handleSubmit">inloggen</button>
-    <p class="error">{{ Auth.error }}</p>
+    <p v-if="Auth.error" :class="Auth.error.type">{{ Auth.error.message }}</p>
   </section>
 </template>
 <style scoped>
@@ -24,13 +24,13 @@ section {
   margin-top: 60px;
 }
 .logo {
-  width: 400px;
+  width: 440px;
 }
 input {
   padding: 6px;
   font-size: 16px;
   border-radius: var(--radius);
-  margin-top: 20px;
+  margin-top: -20px;
   border: 2px solid var(--black-soft);
   font-weight: bold;
   background-color: var(--white);
@@ -38,5 +38,13 @@ input {
 input:focus {
   border: 2px solid var(--secondary);
   outline: none;
+}
+@media screen and (max-width: 500px) {
+  .logo {
+    width: 300px;
+  }
+  input{
+    font-size: 14px;
+  }
 }
 </style>
