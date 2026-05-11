@@ -42,8 +42,7 @@ const props = defineProps({
   />
 </template>
 <style scoped>
-
-img{
+img {
   width: 25px;
   height: 25px;
   cursor: pointer;
@@ -57,6 +56,4 @@ img{
     margin: 0 0 -4% 20%;
   }
 }
-
-
 </style>
