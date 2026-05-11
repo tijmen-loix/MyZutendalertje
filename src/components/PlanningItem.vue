@@ -28,6 +28,7 @@ function getEdit(shift) {
   if (!edits.value[shift.id]) {
     edits.value[shift.id] = {
       datum: formatDate(shift.datum),
+      datumRaw:  shift.datum.slice(0, 10),
       startUur: formatTime(shift.startUur),
       eindUur: formatTime(shift.eindUur),
     }
@@ -61,7 +62,7 @@ function getEdit(shift) {
             <updateShift
               :shift-id="shift.id"
               :shift-user-code="shift.code"
-              :datum="getEdit(shift).datum"
+              :datum="getEdit(shift).datumRaw"
               :start-uur="getEdit(shift).startUur"
               :eind-uur="getEdit(shift).eindUur"
             />

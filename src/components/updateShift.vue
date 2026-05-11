@@ -28,7 +28,6 @@ const props = defineProps({
   <img
     src="@/img/update.svg"
     alt="Updaten"
-    v-if="Auth.admin"
     class="update-icon"
     @click="
       Auth.updateShift(
