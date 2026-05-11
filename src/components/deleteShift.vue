@@ -33,7 +33,6 @@ function submitDelete() {
   <img
     src="@/img/delete-svgrepo-com.svg"
     alt="Delete"
-    v-if="Auth.admin"
     @click="handleDelete"
     class="delete-icon"
   />
