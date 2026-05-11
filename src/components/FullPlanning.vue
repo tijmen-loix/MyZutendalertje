@@ -7,7 +7,7 @@ import MonthChangerAdmin from "@/components/MonthChangerAdmin.vue"
 const today = new Date().toISOString().slice(0, 10)
 
 const Auth = useAuthStore()
-const { allShiftsAdmin} = storeToRefs(Auth)
+const { allShiftsAdmin } = storeToRefs(Auth)
 </script>
 
 <template>
@@ -15,24 +15,27 @@ const { allShiftsAdmin} = storeToRefs(Auth)
     <MonthChangerAdmin />
     <table>
       <thead>
-      <tr>
-        <th>Naam</th>
-        <th>Datum</th>
-        <th>Startuur</th>
-        <th>Einduur</th>
-      </tr>
+        <tr>
+          <th>Naam</th>
+          <th>Datum</th>
+          <th>Startuur</th>
+          <th>Einduur</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="shift in allShiftsAdmin" :key="shift.id" :class="{ future: shift.datum > today }">
-        <td>{{shift.voornaam}}</td>
-        <td>{{ formatDate(shift.datum) }}</td>
-        <td>{{ formatTime(shift.startUur) }}</td>
-        <td>{{ formatTime(shift.eindUur) }}</td>
-      </tr>
-
+        <tr
+          v-for="shift in allShiftsAdmin"
+          :key="shift.id"
+          :class="{ future: shift.datum > today }"
+        >
+          <td>{{ shift.voornaam }}</td>
+          <td>{{ formatDate(shift.datum) }}</td>
+          <td>{{ formatTime(shift.startUur) }}</td>
+          <td>{{ formatTime(shift.eindUur) }}</td>
+        </tr>
       </tbody>
     </table>
-    <p v-if="Auth.error" :class="Auth.error.type">{{Auth.error.message}}</p>
+    <p v-if="Auth.error" :class="Auth.error.type">{{ Auth.error.message }}</p>
   </div>
 </template>
 <style scoped>
@@ -59,14 +62,14 @@ th:nth-child(4) {
   font-weight: bold;
 }
 
-p{
+p {
   font-weight: 500;
   margin-top: 10px;
   display: none;
 }
 
 @media screen and (max-width: 1130px) {
-  table{
+  table {
     width: 100%;
   }
   td,
@@ -78,13 +81,13 @@ p{
   td:nth-child(4) {
     width: 25%;
   }
-  td{
+  td {
     font-size: 12px;
   }
-  th{
+  th {
     font-size: 14px;
   }
-  p{
+  p {
     display: block;
     margin-top: 10px;
     font-size: 12px;

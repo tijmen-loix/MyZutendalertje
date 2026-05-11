@@ -102,26 +102,30 @@ export const useAuthStore = defineStore("auth", () => {
 
   function switchMonth(newMonth) {
     month.value = Number(newMonth)
-    userShifts.value = allShifts.value.filter((shift) => {
-      const maand = parseInt(shift.datum.slice(5, 7))
-      return maand === month.value
-    }).sort((a, b) => {
-      const dateA = new Date(`${a.datum}T${a.startUur}`)
-      const dateB = new Date(`${b.datum}T${b.startUur}`)
-      return dateA - dateB
-    })
+    userShifts.value = allShifts.value
+      .filter((shift) => {
+        const maand = parseInt(shift.datum.slice(5, 7))
+        return maand === month.value
+      })
+      .sort((a, b) => {
+        const dateA = new Date(`${a.datum}T${a.startUur}`)
+        const dateB = new Date(`${b.datum}T${b.startUur}`)
+        return dateA - dateB
+      })
   }
 
   function switchMonthAdmin(newMonth) {
     monthAdmin.value = Number(newMonth)
-    allShiftsAdmin.value = allShiftsAdminOriginal.value.filter((shift) => {
-      const maand = parseInt(shift.datum.slice(5, 7))
-      return maand === monthAdmin.value
-    }).sort((a, b) => {
-      const dateA = new Date(`${a.datum}T${a.startUur}`)
-      const dateB = new Date(`${b.datum}T${b.startUur}`)
-      return dateA - dateB
-    })
+    allShiftsAdmin.value = allShiftsAdminOriginal.value
+      .filter((shift) => {
+        const maand = parseInt(shift.datum.slice(5, 7))
+        return maand === monthAdmin.value
+      })
+      .sort((a, b) => {
+        const dateA = new Date(`${a.datum}T${a.startUur}`)
+        const dateB = new Date(`${b.datum}T${b.startUur}`)
+        return dateA - dateB
+      })
   }
 
   async function updateUurloon(uurloon) {
@@ -166,7 +170,7 @@ export const useAuthStore = defineStore("auth", () => {
       loading.value = false
       return
     }
-    const user = users.value.find(u => u.voornaam === voornaam)
+    const user = users.value.find((u) => u.voornaam === voornaam)
     if (!user) {
       setError("Gebruiker niet gevonden.", "error")
       loading.value = false
@@ -206,6 +210,20 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
+  async function updateShift(id, code, datum, startUur, eindUur) {
+    loading.value = true
+    try {
+      await apiService.updateShift(id, code, datum, startUur, eindUur)
+      setError("Shift succesvol bijgewerkt.", "success")
+      await getShifts(user.value.code)
+      await getAllShifts()
+    } catch (error) {
+      setError("Fout bij het bijwerken van de shift. Probeer opnieuw.", "error")
+    } finally {
+      loading.value = false
+    }
+  }
+
   const isLoggedIn = computed(() => !!user.value)
 
   initialize()
@@ -232,5 +250,6 @@ export const useAuthStore = defineStore("auth", () => {
     monthAdmin,
     addShiftAdmin,
     deleteShift,
+    updateShift,
   }
 })

@@ -31,7 +31,7 @@ const Auth = useAuthStore()
   justify-content: center;
   margin: -10px 40px 20px 40px;
   padding-bottom: 40px;
-  gap:40px
+  gap: 40px;
 }
 @media screen and (max-width: 1130px) {
   .planning {

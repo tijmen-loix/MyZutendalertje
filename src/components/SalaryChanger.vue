@@ -22,7 +22,7 @@ function saveUurloon() {
     <h2>Uurloon: €</h2>
     <input type="number" v-model="uurloon" @change="toggleVisible" />
     <button v-if="visible" @click="saveUurloon" :disabled="Auth.updatingUurloon">-></button>
-    <p v-if="Auth.error" :class="Auth.error.type">{{Auth.error.message}}</p>
+    <p v-if="Auth.error" :class="Auth.error.type">{{ Auth.error.message }}</p>
   </section>
 </template>
 <style scoped>

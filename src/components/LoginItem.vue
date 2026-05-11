@@ -43,7 +43,7 @@ input:focus {
   .logo {
     width: 300px;
   }
-  input{
+  input {
     font-size: 14px;
   }
 }

@@ -41,7 +41,7 @@ async function addShift(code, datum, startUur, eindUur) {
 }
 
 async function getAllShifts() {
-  const res = await fetch (`http://localhost:3000/shifts`)
+  const res = await fetch(`http://localhost:3000/shifts`)
   if (!res.ok) throw new Error("Shifts ophalen mislukt")
   return res.json()
 }
@@ -56,6 +56,16 @@ async function deleteShift(id, code) {
   return res.json()
 }
 
+async function updateShift(id, code, datum, startUur, eindUur) {
+  const res = await fetch(`http://localhost:3000/shifts/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, datum, startUur, eindUur }),
+  })
+  if (!res.ok) throw new Error("Shift aanpassen mislukt")
+  return res.json()
+}
+
 export default {
   login,
   getShifts,
@@ -64,4 +74,5 @@ export default {
   addShift,
   getAllShifts,
   deleteShift,
+  updateShift,
 }

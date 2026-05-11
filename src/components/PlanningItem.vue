@@ -7,6 +7,8 @@ import MonthChanger from "@/components/MonthChanger.vue"
 import AddShift from "@/components/AddShift.vue"
 import UserChanger from "@/components/UserChanger.vue"
 import deleteShift from "@/components/deleteShift.vue"
+import updateShift from "@/components/updateShift.vue"
+import { ref } from "vue"
 
 const today = new Date().toISOString().slice(0, 10)
 
@@ -19,6 +21,19 @@ const monthSalary = computed(() => {
   const hourlyRate = user.value?.uurloon ?? 0
   return "€ " + (totalHoursCalculated.value * hourlyRate).toFixed(2)
 })
+
+const edits = ref({})
+
+function getEdit(shift) {
+  if (!edits.value[shift.id]) {
+    edits.value[shift.id] = {
+      datum: formatDate(shift.datum),
+      startUur: formatTime(shift.startUur),
+      eindUur: formatTime(shift.eindUur),
+    }
+  }
+  return edits.value[shift.id]
+}
 </script>
 
 <template>
@@ -38,14 +53,22 @@ const monthSalary = computed(() => {
       </thead>
       <tbody>
         <tr v-for="shift in userShifts" :key="shift.id" :class="{ future: shift.datum > today }">
-          <td>{{ formatDate(shift.datum) }}</td>
-          <td>{{ formatTime(shift.startUur) }}</td>
-          <td>{{ formatTime(shift.eindUur) }}</td>
-          <td>{{ workedHours(formatHour(shift.startUur), formatHour(shift.eindUur)).toFixed(2) }}
-          <deleteShift :shift-user-code="shift.code" :shift-id="shift.id"/>
+          <td><input type="text" v-model="getEdit(shift).datum" /></td>
+          <td><input type="text" v-model="getEdit(shift).startUur" /></td>
+          <td><input type="text" v-model="getEdit(shift).eindUur" /></td>
+          <td>
+            {{ workedHours(formatHour(shift.startUur), formatHour(shift.eindUur)).toFixed(2) }}
+            <updateShift
+              :shift-id="shift.id"
+              :shift-user-code="shift.code"
+              :datum="getEdit(shift).datum"
+              :start-uur="getEdit(shift).startUur"
+              :eind-uur="getEdit(shift).eindUur"
+            />
+            <deleteShift :shift-user-code="shift.code" :shift-id="shift.id" :datum="shift.datum" />
           </td>
         </tr>
-      <AddShift/>
+        <AddShift />
       </tbody>
       <tfoot>
         <tr>
@@ -62,14 +85,14 @@ const monthSalary = computed(() => {
         </tr>
       </tfoot>
     </table>
-    <p v-if="Auth.error" :class="Auth.error.type">{{Auth.error.message}}</p>
+    <p v-if="Auth.error" :class="Auth.error.type">{{ Auth.error.message }}</p>
   </div>
   <div v-else class="full">
     <h2>Loading...</h2>
   </div>
 </template>
 <style scoped>
-.changers{
+.changers {
   display: flex;
 }
 
@@ -91,19 +114,32 @@ td:nth-child(4),
 th:nth-child(4) {
   width: 300px;
 }
-.future td {
+.future td,
+.future td input {
   color: var(--error);
   font-weight: bold;
+  font-family: inherit;
 }
 
-p{
+p {
   font-weight: 500;
   margin-top: 10px;
   display: none;
 }
 
+input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  font-size: inherit;
+  color: var(--white-soft);
+  outline: none;
+}
+
+
 @media screen and (max-width: 1130px) {
-  table{
+  table {
     width: 100%;
     margin-bottom: -10px;
   }
@@ -116,13 +152,13 @@ p{
   td:nth-child(4) {
     width: 25%;
   }
-  td{
+  td {
     font-size: 12px;
   }
-  th{
+  th {
     font-size: 14px;
   }
-p{
+  p {
     display: block;
     margin-top: 10px;
     font-size: 12px;

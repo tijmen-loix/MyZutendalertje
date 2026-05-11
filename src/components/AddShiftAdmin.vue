@@ -4,26 +4,26 @@ import { useAuthStore } from "@/stores/auth.js"
 
 const Auth = useAuthStore()
 
-const datum = ref(`${Auth.year}-${String(Auth.month).padStart(2, '0')}-`)
+const datum = ref(`${Auth.year}-${String(Auth.month).padStart(2, "0")}-`)
 const startUur = ref("")
 const eindUur = ref("")
 const voornaam = ref("")
 
-watch(() => Auth.month, (newMonth) => {
-  datum.value = `${Auth.year}-${String(newMonth).padStart(2, '0')}-`
-})
-
+watch(
+  () => Auth.month,
+  (newMonth) => {
+    datum.value = `${Auth.year}-${String(newMonth).padStart(2, "0")}-`
+  },
+)
 </script>
 <template>
   <tr>
     <td><input type="text" v-model="voornaam" /></td>
     <td><input type="text" v-model="datum" /></td>
-    <td><input type="text" v-model="startUur" placeholder="10:00"/></td>
-    <td><input type="text" v-model="eindUur" placeholder="18:00"/></td>
+    <td><input type="text" v-model="startUur" placeholder="10:00" /></td>
+    <td><input type="text" v-model="eindUur" placeholder="18:00" /></td>
     <td>
-      <button @click="Auth.addShiftAdmin(voornaam, datum, startUur, eindUur)">
-        Toevoegen
-      </button>
+      <button @click="Auth.addShiftAdmin(voornaam, datum, startUur, eindUur)">Toevoegen</button>
     </td>
   </tr>
 </template>
@@ -37,7 +37,7 @@ td:nth-child(4) {
   width: 300px;
 }
 input {
-  margin:0;
+  margin: 0;
   height: 100%;
   width: 100%;
   outline: none;
@@ -46,7 +46,7 @@ input {
   padding: 0 4px;
   font-size: 14px;
 }
-button{
+button {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -57,7 +57,7 @@ button{
 }
 
 @media screen and (max-width: 1130px) {
-  table{
+  table {
     width: 100%;
   }
   td,
@@ -69,17 +69,17 @@ button{
   td:nth-child(4) {
     width: 25%;
   }
-  td{
+  td {
     font-size: 12px;
   }
-  th{
+  th {
     font-size: 14px;
   }
 
   input {
     font-size: 10px;
   }
-  button{
+  button {
     font-size: 12px;
   }
 }

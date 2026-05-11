@@ -7,8 +7,10 @@ const Auth = useAuthStore()
   <header>
     <section class="header-left">
       <section><img src="@/img/logo-witGroot.png" alt="logo" class="logo" /></section>
-      <section><h1>Welkom, {{ Auth.user.voornaam}}</h1>
-        <SalaryChanger /></section>
+      <section>
+        <h1>Welkom, {{ Auth.user.voornaam }}</h1>
+        <SalaryChanger />
+      </section>
     </section>
     <section class="header-right">
       <button class="uitloggen" @click="Auth.logout">Uitloggen</button>
@@ -45,14 +47,14 @@ h1 {
 }
 
 @media screen and (max-width: 1130px) {
-  .logo{
+  .logo {
     display: none;
   }
   h1 {
     font-size: 18px;
     margin: 8px 0 5px 10px;
   }
-  .header-left{
+  .header-left {
     display: flex;
     flex-direction: column;
   }
@@ -61,17 +63,16 @@ h1 {
     flex-direction: column-reverse;
     align-items: flex-end;
   }
-  header{
+  header {
     padding: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  .uitloggen{
+  .uitloggen {
     margin: 10px 5px 0 0;
     font-size: 12px;
     width: 70px;
     padding: 4px 0;
   }
 }
-
 </style>
