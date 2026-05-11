@@ -1,5 +1,7 @@
+const BASE_URL = import.meta.env.VITE_API_URL
+
 async function login(code) {
-  const res = await fetch("http://localhost:3000/login", {
+  const res = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code }),
@@ -9,19 +11,19 @@ async function login(code) {
 }
 
 async function getShifts(code) {
-  const res = await fetch(`http://localhost:3000/shifts/${code}`)
+  const res = await fetch(`${BASE_URL}/shifts/${code}`)
   if (!res.ok) throw new Error("Shifts ophalen mislukt")
   return res.json()
 }
 
 async function getUsers() {
-  const res = await fetch("http://localhost:3000/users")
+  const res = await fetch(`${BASE_URL}/users`)
   if (!res.ok) throw new Error("Users ophalen mislukt")
   return res.json()
 }
 
 async function updateUurloon(code, uurloon) {
-  const res = await fetch(`http://localhost:3000/users/${code}/uurloon`, {
+  const res = await fetch(`${BASE_URL}/users/${code}/uurloon`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ uurloon }),
@@ -31,7 +33,7 @@ async function updateUurloon(code, uurloon) {
 }
 
 async function addShift(code, datum, startUur, eindUur) {
-  const res = await fetch(`http://localhost:3000/shifts/`, {
+  const res = await fetch(`${BASE_URL}/shifts/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code, datum, startUur, eindUur }),
@@ -41,13 +43,13 @@ async function addShift(code, datum, startUur, eindUur) {
 }
 
 async function getAllShifts() {
-  const res = await fetch(`http://localhost:3000/shifts`)
+  const res = await fetch(`${BASE_URL}/shifts`)
   if (!res.ok) throw new Error("Shifts ophalen mislukt")
   return res.json()
 }
 
 async function deleteShift(id, code) {
-  const res = await fetch(`http://localhost:3000/delete`, {
+  const res = await fetch(`${BASE_URL}/delete`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id, code }),
@@ -57,7 +59,7 @@ async function deleteShift(id, code) {
 }
 
 async function updateShift(id, code, datum, startUur, eindUur) {
-  const res = await fetch(`http://localhost:3000/shifts/${id}`, {
+  const res = await fetch(`${BASE_URL}/shifts/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code, datum, startUur, eindUur }),

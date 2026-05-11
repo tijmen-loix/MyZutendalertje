@@ -137,7 +137,6 @@ input {
   outline: none;
 }
 
-
 @media screen and (max-width: 1130px) {
   table {
     width: 100%;
