@@ -36,6 +36,7 @@ export const useAuthStore = defineStore("auth", () => {
     } else {
       user.value = null
       loading.value = false
+      router.push("/")
     }
   }
 

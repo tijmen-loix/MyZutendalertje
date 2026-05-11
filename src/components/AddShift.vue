@@ -16,7 +16,7 @@ watch(
 )
 </script>
 <template>
-  <tr v-if="Auth.admin">
+  <tr>
     <td><input type="text" v-model="datum" /></td>
     <td><input type="text" v-model="startUur" placeholder="10:00" /></td>
     <td><input type="text" v-model="eindUur" placeholder="18:00" /></td>
