@@ -21,7 +21,7 @@ watch(
     <td><input type="text" v-model="startUur" placeholder="10:00" /></td>
     <td><input type="text" v-model="eindUur" placeholder="18:00" /></td>
     <td>
-      <button @click="Auth.addShift(Auth.user.code, datum, startUur, eindUur)">Toevoegen</button>
+      <button @click="Auth.addShift(Auth.user.id, datum, startUur, eindUur)">Toevoegen</button>
     </td>
   </tr>
 </template>

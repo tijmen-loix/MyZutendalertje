@@ -1,17 +1,28 @@
 const BASE_URL = import.meta.env.VITE_API_URL
 
-async function login(code) {
+async function login(email, wachtwoord) {
   const res = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code }),
+    body: JSON.stringify({ email, wachtwoord }),
   })
   if (!res.ok) throw new Error("Ongeldige code")
   return res.json()
 }
 
-async function getShifts(code) {
-  const res = await fetch(`${BASE_URL}/shifts/${code}`)
+
+async function register(voornaam, naam, email, wachtwoord) {
+  const res = await fetch(`${BASE_URL}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ voornaam, naam, email, wachtwoord }),
+  })
+  if (!res.ok) throw new Error("Ongeldige code")
+  return res.json()
+}
+
+async function getShifts(userId) {
+  const res = await fetch(`${BASE_URL}/shifts/${userId}`)
   if (!res.ok) throw new Error("Shifts ophalen mislukt")
   return res.json()
 }
@@ -32,11 +43,11 @@ async function updateUurloon(code, uurloon) {
   return res.json()
 }
 
-async function addShift(code, datum, startUur, eindUur) {
+async function addShift(id, datum, startUur, eindUur) {
   const res = await fetch(`${BASE_URL}/shifts/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code, datum, startUur, eindUur }),
+    body: JSON.stringify({ id, datum, startUur, eindUur }),
   })
   if (!res.ok) throw new Error("Shift toevoegen mislukt")
   return res.json()
@@ -77,4 +88,5 @@ export default {
   getAllShifts,
   deleteShift,
   updateShift,
+  register,
 }
