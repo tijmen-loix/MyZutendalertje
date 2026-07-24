@@ -8,7 +8,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  shiftUserCode: {
+  shiftUserId: {
     type: String,
     required: true,
   },
@@ -25,7 +25,7 @@ function handleDelete() {
 }
 
 function submitDelete() {
-  Auth.deleteShift(props.shiftId, props.shiftUserCode)
+  Auth.deleteShift(props.shiftId, props.shiftUserId)
   visible.value = false
 }
 </script>

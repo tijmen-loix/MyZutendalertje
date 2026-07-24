@@ -3,6 +3,6 @@ import LoginItem from "@/components/LoginItem.vue"
 </script>
 <template>
   <main>
-    <LoginItem />
+    <LoginItem/>
   </main>
 </template>
