@@ -115,11 +115,13 @@
       }
     }
 
-    async function switchUser(newCode) {
+    async function switchUser(newId) {
       loading.value = true
-      await getUser(newCode)
-      await getShifts(newCode)
-      localStorage.setItem("user", JSON.stringify(user.value))
+      const selected = users.value.find((u) => u.id === newId || u.id === Number(newId))
+      if (selected) {
+        user.value = selected
+      }
+      await getShifts(newId)
       loading.value = false
     }
 
@@ -155,11 +157,11 @@
       if (updatingUurloon.value) return
       updatingUurloon.value = true
       try {
-        await apiService.updateUurloon(user.value.code, uurloon)
+        await apiService.updateUurloon(user.value.id, uurloon)
         user.value.uurloon = uurloon
         setError("Uurloon succesvol aangepast.", "success")
         localStorage.setItem("user", JSON.stringify(user.value))
-        getShifts(user.value.code)
+        getShifts(user.value.id)
       } catch (error) {
         setError("Fout bij het aanpassen van het uurloon. Probeer opnieuw.", "error")
       } finally {
@@ -177,7 +179,7 @@
       try {
         await apiService.addShift(id, datum, startUur, eindUur)
         setError("Shift succesvol toegevoegd.", "success")
-        await getShifts(user.value.code)
+        await getShifts(user.value.id)
         await getAllShifts()
       } catch (error) {
         setError("Fout bij het toevoegen van de shift. Probeer opnieuw.", "error")
@@ -219,12 +221,12 @@
       }
     }
 
-    async function deleteShift(id, code) {
+    async function deleteShift(id, userId) {
       loading.value = true
       try {
-        await apiService.deleteShift(id, code)
+        await apiService.deleteShift(id, userId)
         setError("Shift succesvol verwijderd.", "success")
-        await getShifts(user.value.code)
+        await getShifts(user.value.id)
         await getAllShifts()
       } catch (error) {
         setError("Fout bij het verwijderen van de shift. Probeer opnieuw.", "error")
@@ -233,12 +235,12 @@
       }
     }
 
-    async function updateShift(id, code, datum, startUur, eindUur) {
+    async function updateShift(id, userId, datum, startUur, eindUur) {
       loading.value = true
       try {
-        await apiService.updateShift(id, code, datum, startUur, eindUur)
+        await apiService.updateShift(id, userId, datum, startUur, eindUur)
         setError("Shift succesvol bijgewerkt.", "success")
-        await getShifts(user.value.code)
+        await getShifts(user.value.id)
         await getAllShifts()
       } catch (error) {
         setError("Fout bij het bijwerken van de shift. Probeer opnieuw.", "error")

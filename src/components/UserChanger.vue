@@ -1,16 +1,24 @@
 <script setup>
 import { useAuthStore } from "@/stores/auth.js"
+import { ref } from "vue"
 
 const Auth = useAuthStore()
+
+const selectedUser = ref(Auth.user.id)
+
+function handleUserChange(event) {
+  Auth.switchUser(event)
+  selectedUser.value = Number(event)
+}
 </script>
 <template>
   <section>
     <select
       name="userChanger"
-      @change="Auth.switchUser($event.target.value)"
-      :value="Auth.user.code"
+      @change="handleUserChange($event.target.value)"
+      :value="selectedUser"
     >
-      <option v-for="user in Auth.users" :key="user.code" :value="user.code">
+      <option v-for="user in Auth.users" :key="user.id" :value="user.id">
         {{ user.voornaam }}
       </option>
     </select>

@@ -6,7 +6,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  shiftUserCode: {
+  shiftUserId: {
     type: String,
     required: true,
   },
@@ -32,7 +32,7 @@ const props = defineProps({
     @click="
       Auth.updateShift(
         props.shiftId,
-        props.shiftUserCode,
+        props.shiftUserId,
         props.datum,
         props.startUur,
         props.eindUur,

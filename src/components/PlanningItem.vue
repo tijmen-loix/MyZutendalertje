@@ -61,12 +61,12 @@ function getEdit(shift) {
             {{ workedHours(formatHour(shift.startUur), formatHour(shift.eindUur)).toFixed(2) }}
             <updateShift
               :shift-id="shift.id"
-              :shift-user-code="shift.code"
+              :shift-user-id="shift.user_id"
               :datum="getEdit(shift).datumRaw"
               :start-uur="getEdit(shift).startUur"
               :eind-uur="getEdit(shift).eindUur"
             />
-            <deleteShift :shift-user-code="shift.code" :shift-id="shift.id" :datum="shift.datum" />
+            <deleteShift :shift-user-id="shift.user_id" :shift-id="shift.id" :datum="shift.datum" />
           </td>
         </tr>
         <AddShift />

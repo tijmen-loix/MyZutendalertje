@@ -33,8 +33,8 @@ async function getUsers() {
   return res.json()
 }
 
-async function updateUurloon(code, uurloon) {
-  const res = await fetch(`${BASE_URL}/users/${code}/uurloon`, {
+async function updateUurloon(userId, uurloon) {
+  const res = await fetch(`${BASE_URL}/users/${userId}/uurloon`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ uurloon }),
@@ -59,21 +59,21 @@ async function getAllShifts() {
   return res.json()
 }
 
-async function deleteShift(id, code) {
+async function deleteShift(id, userId) {
   const res = await fetch(`${BASE_URL}/delete`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, code }),
+    body: JSON.stringify({ id, userId }),
   })
   if (!res.ok) throw new Error("Shift verwijderen mislukt")
   return res.json()
 }
 
-async function updateShift(id, code, datum, startUur, eindUur) {
+async function updateShift(id, userId, datum, startUur, eindUur) {
   const res = await fetch(`${BASE_URL}/shifts/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code, datum, startUur, eindUur }),
+    body: JSON.stringify({ userId, datum, startUur, eindUur }),
   })
   if (!res.ok) throw new Error("Shift aanpassen mislukt")
   return res.json()
